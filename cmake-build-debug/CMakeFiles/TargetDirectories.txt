@@ -1,0 +1,3 @@
+C:/Users/K AlQattan/CLionProjects/biblioproject/cmake-build-debug/CMakeFiles/biblioproject.dir
+C:/Users/K AlQattan/CLionProjects/biblioproject/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/K AlQattan/CLionProjects/biblioproject/cmake-build-debug/CMakeFiles/rebuild_cache.dir
