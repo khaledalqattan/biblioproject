@@ -3,4 +3,4 @@ project(biblioproject C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(biblioproject main.c)
+add_executable(biblioproject main.c main.h)

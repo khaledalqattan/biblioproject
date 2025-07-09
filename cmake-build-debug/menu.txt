@@ -1,0 +1,11 @@
+please choose a number from the following menu:
+1- Search based on Author's name
+2- Search based on Title (full or part of the title)
+3- Display all publications along with their types and count
+4- Show the Author's first name list alphabetically
+5- Detect duplicates
+6- UWE Harvard reference
+7- Show if there is missing information
+8- Add new bibliography
+9- Search by year
+10- Search by range of years
