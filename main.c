@@ -4,68 +4,83 @@
 
 
 int main(void) {
-        struct Data entries [30] ; //contains data read from txt file
-        //read_bibliography(bibliofile.txt , entries);
-       int choice= read_menu(); // read menu
-         switch (choice)
-                {
-               char name[100];
-               char title[100];
-               case 1 :
+    struct Data entries [30] ; //contains data read from txt file //read_bibliography (bibliofile.txt , entries);
+    int choice= read_menu(); // read menu
+
+    switch (choice) {
+
+         char name[100];
+         char title[100];
+         int year1;
+         int from;
+         int to;
+                case 1 : //search by author name
                 printf("Type the author name \n");
                 scanf("%s",name);
-                by_Auther_name(entries , name);
+                by_Author_name(entries , name);
             break;
-            case 2:
+                case 2: // search by title
                 printf("Type the title \n");
                 scanf("%s",title );
-                by_Auther_name(entries , name);
                 by_title(entries, title);
             break;
-            case 3:
-           // Display_publications();
+                case 3: // Display all publications;
+                printf("list of all publications Author,Title,Type and Year of publication");
+                Display_publications( entries );
             break;
-            case 4:
-           // authers_names_list();
+                 case 4: // authors_names_list();
+                 printf("list of authors name organized alphabetically");
+                 authors_names_list( entries );
             break;
-            case 5:
-           // dublicate_didecter();
+                 case 5: // duplicate_detector;
+                 duplicate_detector( entries );
             break;
-            case 6:
-                break;
-            case 7:
-                break;
-            case 8:
-                break;
-            case 9:
-                break;
-            case 10:
-                break;
+                 case 6: //UWE_Harvard
+            break;
+                 case 7: //missing_info
+            break;
+                 case 8:// add_bibliography
+            break;
+                 case 9: // search by year of publish
+                 printf("enter the year \n");
+                 scanf("%d", &year1);
+                 printf("publications released in that year \n");
+                 by_Single_year(entries, year1);
+            break;
+                  case 10: // search by range of years of publish
+                  printf("enter the range of years from to:  \n");
+                  scanf("%d %d",&from, &to);
+                  printf("publications released in these years \n");
+                  by_Range_years(entries, from, to);
+            break;
 }
 return 0;
 }
 
 
 int read_menu() {
-FILE *fptr;
-int choice;
-fptr = fopen("menu.txt", "r");
-char myString[100];
-while(fgets(myString, 100, fptr)) {
-    printf("%s", myString);
-}
-fclose(fptr);
-scanf("%d",&choice);
-    return choice;
+   FILE *fptr;
+   int choice;
+   fptr = fopen("menu.txt", "r");
+   char myString[100];
+   while(fgets(myString, 100, fptr)) {printf("%s", myString);
+   }
+   fclose(fptr);
+   scanf("%d",&choice);
+   return choice;
 }
 
-void by_Auther_name(struct Data *entries , char *autherName)
+void by_Author_name(struct Data *entries , char *authorName)
 {
     for ( int i =0 ; i < 30 ; i++ )
     {
-        if ( strstr (   entries[i].auther     , autherName) )
+        if ( strstr (entries[i].author     , authorName) )
         {
             //print data
+            printf("Author: %s \n" , entries[i].author);
+            printf("Title: %s \n" , entries[i].title);
+            printf("Type: %s \n" , entries[i].type);
+            printf("Year: %s \n" , entries[i].year);
         }
     }
 }
@@ -76,30 +91,78 @@ void by_title(struct Data *entries ,char *title) // function to search by title
         if ( strstr (   entries[i].title     , title) )
         {
             //print data
+            printf("Author:%s \n" , entries[i].author);
+            printf("Title: %s \n" , entries[i].title);
+            printf("Type: %s \n" , entries[i].type);
+            printf("Year: %s \n" , entries[i].year);
         }
     }
 }
 
-void Display_publications(struct Data *entries ) // function to display publications
+void Display_publications(struct Data *entries )
 {
+    for ( int i =0 ; i < 30 ; i++ ){
+        // print all entries
+        printf("%s \n" , entries[i].author);
+        printf("%s \n" , entries[i].title);
+        printf("%s \n" , entries[i].type);
+        printf("%s \n" , entries[i].year);
+        printf("------------------------- \n");
+    }
+}
+void authors_names_list(struct Data *entries )
+{
+    for ( int i =0 ; i < 30 ; i++ ){
+        // print all authors alphabetically
+        printf("%s \n" , entries[i].author);
+    }
+}
+void duplicate_detector(struct Data *entries ) // should we compare each entry?
+{
+    for (int i = 0; i < 30; i++) {
+        for (int j = 0; j < 30; j++) {
+            if ( // compare entries
+                strcmp(entries[i].author, entries[j].author) == 0 &&
+                strcmp(entries[i].title, entries[j].title) == 0 &&
+                strcmp(entries[i].type, entries[j].type) == 0 &&
+                strcmp(entries[i].year, entries[j].year) == 0
+                ); // print true
+            printf("Author: %s \n" , entries[i].author);
+            printf("Title: %s \n" , entries[i].title);
+            printf("Type: %s \n" , entries[i].type);
+            printf("Year: %s \n" , entries[i].year);
+            printf("------------------------- \n");
+        }
+    }
 
 }
-void authers_names_list(struct Data *entries ) // function to list authors by name
+
+void by_Single_year(struct Data *entries, int year1)
 {
+    for ( int i =0 ; i < 30 ; i++ ){
+        if ( entries[i].year == year1){
+            // print data
+            printf("Author: %s \n" , entries[i].author);
+            printf("Title: %s \n" , entries[i].title);
+            printf("Type: %s \n" , entries[i].type);
+            printf("Year: %s \n" , entries[i].year);
+            printf("------------------------- \n");
+        }
+    }
 
 }
-void dublicate_didecter(struct Data *entries ) // function to display duplicates
-{
 
-}
-
-
-
-void by_Single_year(struct Data *entries, int signYear)
-{
-
-}
-
-void by_Range_years(struct Data *entries ,int start , int end){
-
+void by_Range_years(struct Data *entries ,int from , int to) {
+    for (int x = from; x <= to; x++) {
+        for (int i = 0; i < 30; i++) {
+           if (entries[i].year == x){
+               //print data
+               printf("Author: %s \n" , entries[i].author);
+               printf("Title: %s \n" , entries[i].title);
+               printf("Type: %s \n" , entries[i].type);
+               printf("Year: %s \n" , entries[i].year);
+               printf("------------------------- \n");
+           }
+        }
+    }
 }

@@ -2,7 +2,7 @@
    author = {J.W. Suh and R.B. Darling and K.-F. Bohringer and B.R. Donald and H. Baltes and G.T. Kovacs},
    doi = {10.1109/ROBOT.2000.844746},
    isbn = {0-7803-5886-4},
-   booktitle = {Proceedings 2000 ICRA. Millennium Conference. IEEE International Conference on Robotics and Automation. Symposia Proceedings (Cat. No.00CH37065)},
+   title = {Proceedings 2000 ICRA. Millennium Conference. IEEE International Conference on Robotics and Automation. Symposia Proceedings (Cat. No.00CH37065)},
    pages = {1101-1108},
    publisher = {IEEE},
    title = {Fully programmable MEMS ciliary actuator arrays for micromanipulation tasks},
