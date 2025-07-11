@@ -1,7 +1,4 @@
-//
 // Created by K AlQattan on 7/9/2025.
-//
-
 #ifndef BIBLIOPROJECT_MAIN_H
 #define BIBLIOPROJECT_MAIN_H
 
@@ -10,6 +7,10 @@ struct Data { // should we add the rest of entries to use later?
     char type [100];
     char author [100];
     int year;
+    char issue [100];
+    char publisher [100];
+    char url [100];
+    int vol;
 };
 int read_menu(); // function to read the menu.txt file
 void by_Author_name(struct Data *entries , char *autherName); // function to search by author name

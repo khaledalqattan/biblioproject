@@ -24,18 +24,20 @@ int main(void) {
                 scanf("%s",title );
                 by_title(entries, title);
             break;
-                case 3: // Display all publications;
-                printf("list of all publications Author,Title,Type and Year of publication");
+                case 3: // Display all publications
+                printf("list of all publications Author,Title,Type and Year of publication \n");
                 Display_publications( entries );
             break;
-                 case 4: // authors_names_list();
-                 printf("list of authors name organized alphabetically");
+                 case 4: // authors_names_list
+                 printf("list of authors name organized alphabetically \n");
                  authors_names_list( entries );
             break;
-                 case 5: // duplicate_detector;
+                 case 5: // duplicate_detector
                  duplicate_detector( entries );
             break;
-                 case 6: //UWE_Harvard
+                 case 6: //UWE_Harvard reference all publications
+                     printf("All publications in UWE Harvard reference: \n");
+                 UWE_Harvard( entries );
             break;
                  case 7: //missing_info
             break;
@@ -166,3 +168,16 @@ void by_Range_years(struct Data *entries ,int from , int to) {
         }
     }
 }
+void UWE_Harvard(struct Data *entries ) { // function to display a UWE Harvard reference for a given publication
+    for (int i = 0; i < 30; i++) {
+        printf("- %s. (%s) %s[online].%s. vol %s. %s. Available from: %s \n", entries[i].author, entries[i].year,
+               entries[i].title, entries[i].issue, entries[i].vol, entries[i].publisher, entries[i].url);
+    }// Author surname, initials. (Year of publication) Title [online]. Edition (if not first edition). Place of publication: Publisher. [Accessed DD Month YYYY].
+    // if info missing replace with Anon
+}
+
+//void missing_info(struct Data *entries ); // function to display missing information from a given publication
+
+//void add_bibliography(struct Data *entries ); // function that allows the user to add a bibliography
+
+//void read_bibliography(struct Data *entries ); // function to read entries in the given bibliography
