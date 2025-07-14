@@ -18,34 +18,32 @@ int main(void) {
                 case 1 : //search by author name // correct and tested
                 printf("Type the author name \n");
                 scanf("%s",name);
-                by_Author_name(entries , name);
+                by_Author_name(entries , name, entryNumbers);
             break;
-                case 2: // search by title // correct and tested
+                case 2: // search by title // correct and tested // there is an error
                 printf("Type the title \n");
                 scanf("%s",title );
-                by_title(entries, title);
+                by_title(entries, title, entryNumbers);
             break;
-                case 3: // Display all publications // should be able to count types
+                case 3: // Display all publications // correct and tested
                 printf("list of all publications Author,Title,Type and Year of publication \n");
                 Display_publications( entries ,entryNumbers );
             break;
-                 case 4: // authors_names_list
-                 printf("list of authors name organized alphabetically \n");
-                 authors_names_list( entries );
+                 case 4: // authors_names_list // correct and tested
+                 authors_names_list( entries , entryNumbers);
             break;
-                 case 5: // duplicate_detector // not correct
+                 case 5: // duplicate_detector // correct and tested
                  duplicate_detector( entries ,entryNumbers );
             break;
-                 case 6: //UWE_Harvard reference all publications // approximately correct
+                 case 6: //UWE_Harvard reference all publications // correct and tested
                  printf("All publications in UWE Harvard reference: \n");
                  UWE_Harvard( entries ,entryNumbers);
             break;
-                 case 7: //missing_info
+                 case 7: //missing_info // not done yet
                  printf("functions with missing information's: \n");
-                 missing_info( entries );
             break;
-                 case 8:// add_bibliography
-                     add_bibliography(&entries,&entryNumbers);
+                 case 8:// add_bibliography // not done yet
+                     add_bibliography(entries,&entryNumbers);
             break;
                  case 9: // search by year of publish // correct and tested
                  printf("enter the year \n");
@@ -76,11 +74,11 @@ int read_menu() {
    return choice;
 }
 
-void by_Author_name(struct Data *entries , char *authorName)
+void by_Author_name(struct Data *entries , char *name, int entryNumbers)
 {
-    for ( int i =0 ; i < 30 ; i++ )
+    for ( int i =0 ; i < entryNumbers ; i++ )
     {
-        if ( strstr (entries[i].author     , authorName) )
+        if ( strstr (entries[i].author     , name) )
         {
             //print data
             printf("Author: %s \n" , entries[i].author);
@@ -90,9 +88,9 @@ void by_Author_name(struct Data *entries , char *authorName)
         }
     }
 }
-void by_title(struct Data *entries ,char *title) // function to search by title
+void by_title(struct Data *entries ,char *title , int entryNumbers) // function to search by title
 {
-    for ( int i =0 ; i < 30 ; i++ )
+    for ( int i =0 ; i < entryNumbers ; i++ )
     {
         if ( strstr (   entries[i].title     , title) )
         {
@@ -105,37 +103,61 @@ void by_title(struct Data *entries ,char *title) // function to search by title
     }
 }
 
-void Display_publications(struct Data *entries , int entryNumbers )
-{
-    for ( int i =0 ; i < entryNumbers ; i++ ){
-        // print all entries
-        printf("%d \n" , i+1); // count // but need to stop
-        printf("%s \n" , entries[i].author);
-        printf("%s \n" , entries[i].title);
-        printf("%s \n" , entries[i].type);
-        printf("%d \n" , entries[i].year);
-        printf("--------------------------------------------------------- \n");
-    }
-}
+void Display_publications(struct Data *entries , int entryNumbers ) {
 
-void authors_names_list(struct Data *entries )
-{
-    for ( int i =0 ; i < 30 ; i++ ){
-        // print all authors alphabetically
-        printf("%s \n" , entries[i].author);
+    int A = 0, T = 0, I = 0, M = 0; // to count types
+
+        for (int i = 0; i < entryNumbers; i++) {
+            // Print all publication
+            printf("%d \n", i + 1);
+            printf("%s \n", entries[i].author);
+            printf("%s \n", entries[i].title);
+            printf("%s \n", entries[i].type);
+            printf("%d \n", entries[i].year);
+            printf("--------------------------------------------------------- \n");
+            // count types
+            if (strcmp(entries[i].type, "article") == 0) {
+                A++;
+            } else if (strcmp(entries[i].type, "techReport") == 0) {
+                T++;
+            } else if (strcmp(entries[i].type, "inproceedings") == 0) {
+                I++;
+            } else if (strcmp(entries[i].type, "misc") == 0) {
+                M++;
+            }
+        } // print the count
+        printf("article in text: %d\n", A);
+        printf("techReport in text: %d\n", T);
+        printf("inproceedings in text: %d\n", I);
+        printf("misc in text: %d\n", M);
     }
-}
-void duplicate_detector(struct Data *entries , int entriesNumber ) // should we compare each entry?
+
+void authors_names_list(struct Data *entries , int entryNumbers) {
+    for (int i = 0; i < entryNumbers - 1; i++) { // compare authors
+        for (int j = i + 1; j < entryNumbers; j++) {
+            if (strcmp(entries[i].author, entries[j].author) > 0) {
+                struct Data temp = entries[i]; // change entry structure
+                entries[i] = entries[j];
+                entries[j] = temp;
+            }
+        }
+    }
+    printf("Authors in alphabetical order:\n"); // Print sorted authors
+    for (int i = 0; i < entryNumbers; i++) {
+            printf("%s\n", entries[i].author);
+        }
+    }
+void duplicate_detector(struct Data *entries , int entryNumbers )
 {
-    for (int i = 0; i < entriesNumber-1; i++) {
-        for (int j = i+1; j < entriesNumber; j++) {
+    for (int i = 0; i < entryNumbers-1; i++) {
+        for (int j = i+1; j < entryNumbers; j++) {
             if ( // compare entries
                     strcmp(entries[i].author, entries[j].author) == 0 &&
                     strcmp(entries[i].title, entries[j].title) == 0 &&
                     strcmp(entries[i].type, entries[j].type) == 0 &&
                     entries[i].year == entries[j].year
                     ) {// print true
-                printf("Duplications here : \n");
+                printf("There is a duplicate of:  \n");
                 printf("Author: %s \n", entries[i].author);
                 printf("Title: %s \n", entries[i].title);
                 printf("Type: %s \n", entries[i].type);
@@ -175,22 +197,17 @@ void by_Range_years(struct Data *entries ,int from , int to) {
         }
     }
 }
-void UWE_Harvard(struct Data *entries , int entriesNumber ) { // function to display a UWE Harvard reference for a given publication
-    for (int i = 0; i < entriesNumber; i++) {
+void UWE_Harvard(struct Data *entries , int entryNumbers ) { // function to display a UWE Harvard reference for a given publication
+    for (int i = 0; i < entryNumbers; i++) {
         printf("- %s. (%d) %s[online].%d. vol %d. %s. Available from: %s \n", entries[i].author, entries[i].year,
                entries[i].title, entries[i].issue, entries[i].vol, entries[i].publisher, entries[i].url);
     }// Author surname, initials. (Year of publication) Title [online]. Edition (if not first edition). Place of publication: Publisher. [Accessed DD Month YYYY].
     // if info missing replace with Anon
 }
-void add_bibliography(struct Data *entries , int *entriesNumber ) // function that allows the user to add a bibliography//send by ref , send by value
-{   *entriesNumber++; // not complete
+void add_bibliography(struct Data *entries , int *entryNumber ) // function that allows the user to add a bibliography//send by ref , send by value
+{   *entryNumber++; // not complete
     printf("Enter type \n");
-    scanf("%s",entries[*entriesNumber].type);
-
-
-
-
-
+    scanf("%s",entries[*entryNumber].type);
 
     //update file
     FILE *file = fopen("bibliofile.txt", "a");
