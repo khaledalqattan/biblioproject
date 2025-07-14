@@ -204,15 +204,26 @@ void UWE_Harvard(struct Data *entries , int entryNumbers ) { // function to disp
     }// Author surname, initials. (Year of publication) Title [online]. Edition (if not first edition). Place of publication: Publisher. [Accessed DD Month YYYY].
     // if info missing replace with Anon
 }
-void add_bibliography(struct Data *entries , int *entryNumber ) // function that allows the user to add a bibliography//send by ref , send by value
-{   *entryNumber++; // not complete
+void add_bibliography(struct Data *entries , int *entryNumber ) // function that allows the user to add a bibliography
+{
     printf("Enter type \n");
     scanf("%s",entries[*entryNumber].type);
-
+    printf("Enter author \n");
+    scanf("%s",entries[*entryNumber].author);
+    printf("Enter title \n");
+    scanf("%s",entries[*entryNumber].title);
+    printf("Enter year \n");
+    scanf("%d",&entries[*entryNumber].year);
     //update file
     FILE *file = fopen("bibliofile.txt", "a");
-
-    fprintf(file,"@%s{,\n");
+    fprintf(file, "@%s{,\n", entries[*entryNumber].type);
+    fprintf(file, "   author = {%s},\n", entries[*entryNumber].author);
+    fprintf(file, "   title = {%s},\n", entries[*entryNumber].title);
+    fprintf(file, "   year = {%d},\n", entries[*entryNumber].year);
+    fprintf(file, "}\n\n");
+    fclose(file);
+    (*entryNumber)++;
+    printf("Your entry was add.\n");
 }
 // void missing_info(struct Data *entries )// function to display missing information from a given publication
 
