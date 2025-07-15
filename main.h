@@ -24,7 +24,6 @@ void add_bibliography(struct Data *entries ,int *entriesNumbers ); // function t
 int read_bibliography(struct Data *entries ); // function to read entries in the given bibliography
 void by_Single_year(struct Data *entries, int signYear); // function to search by year of publication
 void by_Range_years(struct Data *entries ,int start , int end); // function to search by a range of years
-// for practice
-void clean_value(char *value);
+void clean_value(char *value);// function to clean up the syntax in bibliofile.txt
 
 #endif
