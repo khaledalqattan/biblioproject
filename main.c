@@ -20,7 +20,7 @@ int main(void) {
                 scanf("%s",name);
                 by_Author_name(entries , name, entryNumbers);
             break;
-                case 2: // search by title // correct and tested // there is an error
+                case 2: // search by title // correct and tested
                 printf("Type the title \n");
                 scanf("%s",title );
                 by_title(entries, title, entryNumbers);
@@ -39,13 +39,14 @@ int main(void) {
                  printf("All publications in UWE Harvard reference: \n");
                  UWE_Harvard( entries ,entryNumbers);
             break;
-                 case 7: //missing_info // not done yet
+                 case 7: //missing_info // correct and tested
                  printf("functions with missing information's: \n");
+                 missing_info(entries ,entryNumbers);
             break;
-                 case 8:// add_bibliography // not done yet
-                     add_bibliography(entries,&entryNumbers);
+                 case 8:// add_bibliography // correct and tested
+                 add_bibliography(entries,&entryNumbers);
             break;
-                 case 9: // search by year of publish // correct and tested
+                 case 9: // search by year of publish // correct and tested // a question to reference publication is added
                  printf("enter the year \n");
                  scanf("%d", &year1);
                  printf("publications released in that year \n");
@@ -61,7 +62,6 @@ int main(void) {
 return 0;
 }
 
-
 int read_menu() {
    FILE *fptr;
    int choice;
@@ -74,7 +74,7 @@ int read_menu() {
    return choice;
 }
 
-void by_Author_name(struct Data *entries , char *name, int entryNumbers)
+void by_Author_name(struct Data *entries , char *name, int entryNumbers) // function to search by author name
 {
     for ( int i =0 ; i < entryNumbers ; i++ )
     {
@@ -147,7 +147,7 @@ void authors_names_list(struct Data *entries , int entryNumbers) {
             printf("%s\n", entries[i].author);
         }
     }
-void duplicate_detector(struct Data *entries , int entryNumbers )
+void duplicate_detector(struct Data *entries , int entryNumbers ) // function to display publications that are duplicated in text file
 {
     for (int i = 0; i < entryNumbers-1; i++) {
         for (int j = i+1; j < entryNumbers; j++) {
@@ -168,7 +168,7 @@ void duplicate_detector(struct Data *entries , int entryNumbers )
     }
 }
 
-void by_Single_year(struct Data *entries, int year1)
+void by_Single_year(struct Data *entries, int year1) // function to search for a single year
 {
     for ( int i =0 ; i < 30 ; i++ ){
         if ( entries[i].year == year1){
@@ -178,12 +178,19 @@ void by_Single_year(struct Data *entries, int year1)
             printf("Type: %s \n" , entries[i].type);
             printf("Year: %d \n" , entries[i].year);
             printf("-------------------------------------------------------------- \n");
+            char answer;
+            printf("Do you want a UWE Harvard reference? (y/n):");
+            scanf("%c", &answer);
+            if (answer == 'y' || answer == 'Y'){
+                printf("- %s. (%d) %s[online].%d. vol %d. %s. Available from: %s \n", entries[i].author, entries[i].year,
+                       entries[i].title, entries[i].issue, entries[i].vol, entries[i].publisher, entries[i].url);
+            }
         }
     }
 
 }
 
-void by_Range_years(struct Data *entries ,int from , int to) {
+void by_Range_years(struct Data *entries ,int from , int to) { // function to search by range of years
     for (int x = from; x <= to; x++) {
         for (int i = 0; i < 30; i++) {
            if (entries[i].year == x){
@@ -197,40 +204,60 @@ void by_Range_years(struct Data *entries ,int from , int to) {
         }
     }
 }
-void UWE_Harvard(struct Data *entries , int entryNumbers ) { // function to display a UWE Harvard reference for a given publication
+void UWE_Harvard(struct Data *entries , int entryNumbers ) { // function to display a UWE Harvard reference for all publications
     for (int i = 0; i < entryNumbers; i++) {
         printf("- %s. (%d) %s[online].%d. vol %d. %s. Available from: %s \n", entries[i].author, entries[i].year,
                entries[i].title, entries[i].issue, entries[i].vol, entries[i].publisher, entries[i].url);
     }// Author surname, initials. (Year of publication) Title [online]. Edition (if not first edition). Place of publication: Publisher. [Accessed DD Month YYYY].
     // if info missing replace with Anon
 }
-void add_bibliography(struct Data *entries , int *entryNumber ) // function that allows the user to add a bibliography
+void add_bibliography(struct Data *entries , int *entryNumbers ) // function that allows the user to add a bibliography
 {
     printf("Enter type \n");
-    scanf("%s",entries[*entryNumber].type);
+    scanf("%s",entries[*entryNumbers].type);
     printf("Enter author \n");
-    scanf("%s",entries[*entryNumber].author);
+    scanf("%s",entries[*entryNumbers].author);
     printf("Enter title \n");
-    scanf("%s",entries[*entryNumber].title);
+    scanf("%s",entries[*entryNumbers].title);
     printf("Enter year \n");
-    scanf("%d",&entries[*entryNumber].year);
+    scanf("%d",&entries[*entryNumbers].year);
     //update file
     FILE *file = fopen("bibliofile.txt", "a");
-    fprintf(file, "@%s{,\n", entries[*entryNumber].type);
-    fprintf(file, "   author = {%s},\n", entries[*entryNumber].author);
-    fprintf(file, "   title = {%s},\n", entries[*entryNumber].title);
-    fprintf(file, "   year = {%d},\n", entries[*entryNumber].year);
+    fprintf(file, "@%s{,\n", entries[*entryNumbers].type);
+    fprintf(file, "   author = {%s},\n", entries[*entryNumbers].author);
+    fprintf(file, "   title = {%s},\n", entries[*entryNumbers].title);
+    fprintf(file, "   year = {%d},\n", entries[*entryNumbers].year);
     fprintf(file, "}\n\n");
     fclose(file);
-    (*entryNumber)++;
+    (*entryNumbers)++;
     printf("Your entry was add.\n");
 }
-// void missing_info(struct Data *entries )// function to display missing information from a given publication
+void missing_info(struct Data *entries, int entryNumbers )// function to display missing information from a given publication
+{
+    for (int i = 0; i < entryNumbers; i++){
+        if (
+            strlen(entries[i].author) ==0 ||
+            strlen(entries[i].title) ==0||
+            strlen(entries[i].type) ==0  ||
+            strlen(entries[i].issue) ==0  ||
+            strlen(entries[i].publisher) ==0  ||
+            strlen(entries[i].url) ==0  ||
+            entries[i].vol==0 ||
+            entries[i].year==0
+            ){
+            printf("Author: %s \n" , entries[i].author);
+            printf("Title: %s \n" , entries[i].title);
+            printf("Type: %s \n" , entries[i].type);
+            printf("Issue: %s \n" , entries[i].issue);
+            printf("Publisher: %s \n" , entries[i].publisher);
+            printf("Url: %s \n" , entries[i].url);
+            printf("Volume: %d \n" , entries[i].vol);
+            printf("Year: %d \n" , entries[i].year);
+            printf("-------------------------------------------------------------- \n");
+        }
 
-//void read_bibliography(struct Data *entries ); // function to read entries in the given bibliography
-
-// /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// just for practise
+    }
+}
 
 void clean_value(char *value) {
     // Removes braces, commas, newlines, tabs, and spaces at the beginning
@@ -243,48 +270,40 @@ void clean_value(char *value) {
     *dst = '\0';
 }
 
-int read_bibliography(struct Data *entries) {
+int read_bibliography(struct Data *entries) // function to read entries in the given bibliography
+{
     FILE *file = fopen("bibliofile.txt", "r");
     if (!file) {
         perror("Error opening bibliofile.txt");
         return -1;
     }
-
     char line[500];
     int entryIndex = -1;
-
     while (fgets(line, sizeof(line), file)) {
         if (strstr(line, "@")) {
             entryIndex++;
             if (entryIndex >= 30) break; // prevent overflow
-            memset(&entries[entryIndex], 0, sizeof(struct Data)); // reset struct
-
+            memset(&entries[entryIndex], 0, sizeof(struct Data));
             if (strstr(line, "@article")) strcpy(entries[entryIndex].type, "article");
             else if (strstr(line, "@techReport")) strcpy(entries[entryIndex].type, "techReport");
             else if (strstr(line, "@inproceedings")) strcpy(entries[entryIndex].type, "inproceedings");
             else if (strstr(line, "@misc")) strcpy(entries[entryIndex].type, "misc");
             continue;
         }
-
         char *key = strtok(line, "=");
         char *value = strtok(NULL, "=");
-
         if (!key || !value) continue;
-
         // Clean up spaces
         while (*value == ' ' || *value == '\t') value++;
-
         clean_value(value); // fix for incorrect values
-
         if (strstr(key, "author")) strcpy(entries[entryIndex].author, value);
         else if (strstr(key, "title")) strcpy(entries[entryIndex].title, value);
-        else if (strstr(key, "year")) entries[entryIndex].year = atoi(value);  // corrected year parsing
+        else if (strstr(key, "year")) entries[entryIndex].year = atoi(value);
         else if (strstr(key, "issue")) strcpy(entries[entryIndex].issue, value);
         else if (strstr(key, "publisher")) strcpy(entries[entryIndex].publisher, value);
         else if (strstr(key, "url")) strcpy(entries[entryIndex].url, value);
         else if (strstr(key, "volume")) entries[entryIndex].vol = atoi(value);
     }
-
     fclose(file);
     return entryIndex+1;
 }
