@@ -58,6 +58,7 @@ int main(void) {
                   printf("publications released in these years \n");
                   by_Range_years(entries, from, to);
             break;
+        default : printf("invalid menu choice\n");break;
 }
 return 0;
 }
@@ -180,7 +181,7 @@ void by_Single_year(struct Data *entries, int year1) // function to search for a
             printf("-------------------------------------------------------------- \n");
             char answer;
             printf("Do you want a UWE Harvard reference? (y/n):");
-            scanf("%c", &answer);
+            scanf(" %c", &answer);
             if (answer == 'y' || answer == 'Y'){
                 printf("- %s. (%d) %s[online].%d. vol %d. %s. Available from: %s \n", entries[i].author, entries[i].year,
                        entries[i].title, entries[i].issue, entries[i].vol, entries[i].publisher, entries[i].url);
@@ -209,7 +210,6 @@ void UWE_Harvard(struct Data *entries , int entryNumbers ) { // function to disp
         printf("- %s. (%d) %s[online].%d. vol %d. %s. Available from: %s \n", entries[i].author, entries[i].year,
                entries[i].title, entries[i].issue, entries[i].vol, entries[i].publisher, entries[i].url);
     }// Author surname, initials. (Year of publication) Title [online]. Edition (if not first edition). Place of publication: Publisher. [Accessed DD Month YYYY].
-    // if info missing replace with Anon
 }
 void add_bibliography(struct Data *entries , int *entryNumbers ) // function that allows the user to add a bibliography
 {
@@ -260,7 +260,6 @@ void missing_info(struct Data *entries, int entryNumbers )// function to display
 }
 
 void clean_value(char *value) {
-    // Removes braces, commas, newlines, tabs, and spaces at the beginning
     char *src = value, *dst = value;
     while (*src) {
         if (*src != '{' && *src != '}' && *src != ',' && *src != '\n' && *src != '\r')

@@ -2,12 +2,12 @@
 #ifndef BIBLIOPROJECT_MAIN_H
 #define BIBLIOPROJECT_MAIN_H
 
-struct Data { // should we add the rest of entries to use later?
+struct Data { // structure for entries
     char title [100];
     char type [100];
     char author [100];
     int year;
-    char issue[100]; //should be int but missing_information not working
+    char issue[100];
     char publisher [100];
     char url [100];
     int vol;
