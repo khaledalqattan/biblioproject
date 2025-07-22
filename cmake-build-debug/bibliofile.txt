@@ -5,12 +5,25 @@
    booktitle = {Proceedings 2000 ICRA. Millennium Conference. IEEE International Conference on Robotics and Automation. Symposia Proceedings (Cat. No.00CH37065)},
    pages = {1101-1108},
    publisher = {IEEE},
-   title = {Fully programmable MEMS ciliary actuator arrays for micromanipulation tasks},
+   title = {Fully programmable  MEMS ciliary actuator arrays for micromanipulation tasks},
    volume = {2},
    url = {http://ieeexplore.ieee.org/document/844746/}
 }
+
 @techReport{,
    author = {QAA},
+   title = {UK Quality Code for Higher Education Advice and Guidance Assessment}
+}
+@techReport{,
+   author = {QAA},
+   title = {UK Quality Code for Higher Education Advice and Guidance Assessment}
+}
+@techReport{,
+   author = {QAA},
+   title = {UK Quality Code for Higher Education Advice and Guidance Assessment}
+}
+@techReport{,
+   author = {qaa},
    title = {UK Quality Code for Higher Education Advice and Guidance Assessment}
 }
 @article{Veldkamp2020,
@@ -176,3 +189,10 @@
    volume = {47},
    year = {1979}
 }
+
+@misc{,
+   author = {khaled},
+   title = {alqattan},
+   year = {2004},
+}
+

@@ -4,64 +4,66 @@
 #include <stdlib.h>
 
 int main(void) {
-    struct Data entries [30] ; //contains data read from txt file //read_bibliography (bibliofile.txt , entries);
-    int entryNumbers=read_bibliography( entries );
-    int choice= read_menu(); // read menu // correct and tested
+    struct Data entries[30]; //contains data read from txt file //read_bibliography (bibliofile.txt , entries);
+    int entryNumbers = read_bibliography(entries);
+    int choice = read_menu(); // read menu // correct and tested
     switch (choice) {
 
-         char name[100];
-         char title[100];
-         int year1;
-         int from;
-         int to;
+            char name[100];
+            char title[100];
+            int year1;
+            int from;
+            int to;
 
-                case 1 : //search by author name // correct and tested
+            case 1 : //search by author name // correct and tested
                 printf("Type the author name \n");
-                scanf("%s",name);
-                by_Author_name(entries , name, entryNumbers);
-            break;
-                case 2: // search by title // correct and tested
+                scanf("%s", name);
+                by_Author_name(entries, name, entryNumbers);
+                break;
+            case 2: // search by title // correct and tested
                 printf("Type the title \n");
-                scanf("%s",title );
+                scanf("%s", title);
                 by_title(entries, title, entryNumbers);
-            break;
-                case 3: // Display all publications // correct and tested
+                break;
+            case 3: // Display all publications // correct and tested
                 printf("list of all publications Author,Title,Type and Year of publication \n");
-                Display_publications( entries ,entryNumbers );
-            break;
-                 case 4: // authors_names_list // correct and tested
-                 authors_names_list( entries , entryNumbers);
-            break;
-                 case 5: // duplicate_detector // correct and tested
-                 duplicate_detector( entries ,entryNumbers );
-            break;
-                 case 6: //UWE_Harvard reference all publications // correct and tested
-                 printf("All publications in UWE Harvard reference: \n");
-                 UWE_Harvard( entries ,entryNumbers);
-            break;
-                 case 7: //missing_info // correct and tested
-                 printf("functions with missing information's: \n");
-                 missing_info(entries ,entryNumbers);
-            break;
-                 case 8:// add_bibliography // correct and tested
-                 add_bibliography(entries,&entryNumbers);
-            break;
-                 case 9: // search by year of publish // correct and tested // a question to reference publication is added
-                 printf("enter the year \n");
-                 scanf("%d", &year1);
-                 printf("publications released in that year \n");
-                 by_Single_year(entries, year1);
-            break;
-                  case 10: // search by range of years of publish // correct and tested
-                  printf("enter the range of years from to:  \n");
-                  scanf("%d %d",&from, &to);
-                  printf("publications released in these years \n");
-                  by_Range_years(entries, from, to);
-            break;
-        default : printf("invalid menu choice\n");break;
-}
-return 0;
-}
+                Display_publications(entries, entryNumbers);
+                break;
+            case 4: // authors_names_list // correct and tested
+                authors_names_list(entries, entryNumbers);
+                break;
+            case 5: // duplicate_detector // correct and tested
+                duplicate_detector(entries, entryNumbers);
+                break;
+            case 6: //UWE_Harvard reference all publications // correct and tested
+                printf("All publications in UWE Harvard reference: \n");
+                UWE_Harvard(entries, entryNumbers);
+                break;
+            case 7: //missing_info // correct and tested
+                printf("functions with missing information's: \n");
+                missing_info(entries, entryNumbers);
+                break;
+            case 8:// add_bibliography // correct and tested
+                add_bibliography(entries, &entryNumbers);
+                break;
+            case 9: // search by year of publish // correct and tested // a question to reference publication is added
+                printf("enter the year \n");
+                scanf("%d", &year1);
+                printf("publications released in that year \n");
+                by_Single_year(entries, year1);
+                break;
+            case 10: // search by range of years of publish // correct and tested
+                printf("enter the range of years from to:  \n");
+                scanf("%d %d", &from, &to);
+                printf("publications released in these years \n");
+                by_Range_years(entries, from, to);
+                break;
+            default :
+                printf("invalid menu choice\n");
+                break;
+        }
+        return 0;
+    }
 
 int read_menu() {
    FILE *fptr;
@@ -262,6 +264,7 @@ void missing_info(struct Data *entries, int entryNumbers )// function to display
 void clean_value(char *value) {
     char *src = value, *dst = value;
     while (*src) {
+        //handle all possible unwanted characters
         if (*src != '{' && *src != '}' && *src != ',' && *src != '\n' && *src != '\r')
             *dst++ = *src;
         src++;
@@ -278,11 +281,14 @@ int read_bibliography(struct Data *entries) // function to read entries in the g
     }
     char line[500];
     int entryIndex = -1;
+
     while (fgets(line, sizeof(line), file)) {
         if (strstr(line, "@")) {
             entryIndex++;
             if (entryIndex >= 30) break; // prevent overflow
             memset(&entries[entryIndex], 0, sizeof(struct Data));
+
+            //get the type if it is one of the followings :
             if (strstr(line, "@article")) strcpy(entries[entryIndex].type, "article");
             else if (strstr(line, "@techReport")) strcpy(entries[entryIndex].type, "techReport");
             else if (strstr(line, "@inproceedings")) strcpy(entries[entryIndex].type, "inproceedings");
@@ -291,10 +297,9 @@ int read_bibliography(struct Data *entries) // function to read entries in the g
         }
         char *key = strtok(line, "=");
         char *value = strtok(NULL, "=");
-        if (!key || !value) continue;
-        // Clean up spaces
+        if (!key || !value) continue; //move to next line
         while (*value == ' ' || *value == '\t') value++;
-        clean_value(value); // fix for incorrect values
+        clean_value(value);
         if (strstr(key, "author")) strcpy(entries[entryIndex].author, value);
         else if (strstr(key, "title")) strcpy(entries[entryIndex].title, value);
         else if (strstr(key, "year")) entries[entryIndex].year = atoi(value);

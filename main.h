@@ -11,7 +11,9 @@ struct Data { // structure for entries
     char publisher [100];
     char url [100];
     int vol;
+
 };
+
 int read_menu(); // function to read the menu.txt file
 void by_Author_name(struct Data *entries , char *name, int entryNumbers ); // function to search by author name
 void by_title(struct Data *entries ,char *title, int entryNumbers ); // function to search by title
